@@ -2,7 +2,8 @@ import {
   PexotaBase,
   KavaleriaBase,
   ArtileriaBase,
-  gameEngine
+  gameEngine,
+  MilitaryUnitsFactory
 } from "./coreTeam/gameEngine";
 
 class FrancePexota extends PexotaBase {}

@@ -11,6 +11,46 @@ class KavaleriaBase extends MilitaryUnit {} //5
 
 class ArtileriaBase extends MilitaryUnit {} // 2
 
+
+// Our abstract factory which should be implemented by all country teams(mandatory)
+// all methods should be implemented.
+class MilitaryUnitsFactory {
+  constructor(countryName) {
+    if (!countryName) {
+      throw new Error("Country name should be provided");
+    }
+    this.countryName = countryName;
+
+    if (this.constructor.name === 'MilitaryUnitsFactory') {
+      throw new TypeError("You can't create object from abstract MilitaryUnitsFactory");
+    }
+
+    const proto = Object.getPrototypeOf(this);
+    const superProto = MilitaryUnitsFactory.prototype;
+    const childMethodNames = Object.getOwnPropertyNames(proto);
+
+    const missingMethodName = Object.getOwnPropertyNames(superProto)
+    .find(name => {
+      return !childMethodNames.includes(name);
+    });
+
+    if (missingMethodName) {
+      throw new TypeError(`Your class ${this.countryName} didn't implement ${missingMethodName} method!!! Please provide`);
+    }
+  }
+
+  createPexota() {
+
+  }
+
+  createKavaleria() {
+
+  }
+
+  createArtileria() {
+
+  }
+}
 class NotFareGameException extends Error {
   constructor() {
     super("This game is not fare!!!");
@@ -19,6 +59,7 @@ class NotFareGameException extends Error {
 
 class GameEngine {
   constructor() {
+    this._militaryUnitsFactories = [];
     this._numberOfPexota = 3;
     this._numberOfKavaleria = 5;
     this._numberOfArtileria = 2;
@@ -39,8 +80,15 @@ class GameEngine {
   }
 
   registerContry(countryUnitsFactory) {
-    this._registeredCountriesNames.push(countryUnitsFactory.country);
-    this._registeredCountriesUnitsFactory.push(countryUnitsFactory);
+    throw new Error("Don't use 'registerContry' method, use 'registerMilitraryUnitsFactory'!!!");
+  }
+
+  registerMilitraryUnitsFactory(factory) {
+    if (!factory?.countryName) {
+      throw new Error("No Valid country provided!");
+    }
+
+    this._militaryUnitsFactories.push(factory);
   }
 
   getCountries() {
@@ -177,4 +225,4 @@ class GameEngine {
 const gameEngine = new GameEngine();
 console.log(gameEngine);
 
-export { gameEngine, PexotaBase, KavaleriaBase, ArtileriaBase };
+export { gameEngine, PexotaBase, KavaleriaBase, ArtileriaBase, MilitaryUnitsFactory };
