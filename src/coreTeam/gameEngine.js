@@ -90,7 +90,39 @@ class GameEngine {
   }
 
   createInitialUnits() {
-    throw new Error("createInitialUnits is not implemented!!!");
+    const player1 = this._registeredCountriesUnitsFactory[0];
+    const player2 = this._registeredCountriesUnitsFactory[1];
+
+    try {
+      for (let i = 0; i < this._numberOfPexota; i++) {
+        if (player1.country === this._firstPlayerCountry) {
+          this.player1Pexotas.push(new player1.pexota());
+        }
+        if (player2.country === this._secondPlayerCountry) {
+          this.player2Pexotas.push(new player2.pexota());
+        }
+      }
+
+      for (let i = 0; i < this._numberOfKavaleria; i++) {
+        if (player1.country === this._firstPlayerCountry) {
+          this.player1Kavalerias.push(new player1.kavaleria());
+        }
+        if (player2.country === this._secondPlayerCountry) {
+          this.player2Kavalerias.push(new player2.kavaleria());
+        }
+      }
+
+      for (let i = 0; i < this._numberOfArtileria; i++) {
+        if (player1.country === this._firstPlayerCountry) {
+          this.player1Artilerias.push(new player1.artileria());
+        }
+        if (player2.country === this._secondPlayerCountry) {
+          this.player2Artilerias.push(new player2.artileria());
+        }
+      }
+    } catch (error) {
+      throw new Error("createInitialUnits is not implemented!!!");
+    }
   }
 
   startGame() {

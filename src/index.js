@@ -21,5 +21,4 @@ let secondPlayerSelectedCountry = allCountries[1];
 
 gameEngine.setFirstPlayerCountry(firstPlaySelectedCountry);
 gameEngine.setSecondPlayerCountry(secondPlayerSelectedCountry);
-
 gameEngine.startGame();
