@@ -89,40 +89,74 @@ class GameEngine {
     }
   }
 
+  createUnits(pexotaArray, kavaleriaArray, artileriaArray, unitsFactory) {
+    for (let i = 0; i < this._numberOfPexota; i++) {
+      pexotaArray.push(new unitsFactory.pexota());
+    }
+    for (let i = 0; i < this._numberOfKavaleria; i++) {
+      kavaleriaArray.push(new unitsFactory.kavaleria());
+    }
+    for (let i = 0; i < this._numberOfArtileria; i++) {
+      artileriaArray.push(new unitsFactory.artileria());
+    }
+  }
+
   createInitialUnits() {
-    const player1 = this._registeredCountriesUnitsFactory[0];
-    const player2 = this._registeredCountriesUnitsFactory[1];
+    const player1UnitsFactory = this._registeredCountriesUnitsFactory[0];
+    const player2UnitsFactory = this._registeredCountriesUnitsFactory[1];
 
     try {
-      for (let i = 0; i < this._numberOfPexota; i++) {
-        if (player1.country === this._firstPlayerCountry) {
-          this.player1Pexotas.push(new player1.pexota());
-        }
-        if (player2.country === this._secondPlayerCountry) {
-          this.player2Pexotas.push(new player2.pexota());
-        }
-      }
+      this.createUnits(
+        this.player1Pexotas,
+        this.player1Kavalerias,
+        this.player1Artilerias,
+        player1UnitsFactory
+      );
 
-      for (let i = 0; i < this._numberOfKavaleria; i++) {
-        if (player1.country === this._firstPlayerCountry) {
-          this.player1Kavalerias.push(new player1.kavaleria());
-        }
-        if (player2.country === this._secondPlayerCountry) {
-          this.player2Kavalerias.push(new player2.kavaleria());
-        }
-      }
-
-      for (let i = 0; i < this._numberOfArtileria; i++) {
-        if (player1.country === this._firstPlayerCountry) {
-          this.player1Artilerias.push(new player1.artileria());
-        }
-        if (player2.country === this._secondPlayerCountry) {
-          this.player2Artilerias.push(new player2.artileria());
-        }
-      }
+      this.createUnits(
+        this.player2Pexotas,
+        this.player2Kavalerias,
+        this.player2Artilerias,
+        player2UnitsFactory
+      );
     } catch (error) {
-      throw new Error("createInitialUnits is not implemented!!!");
+      throw new Error("!!!createInitialUnits is not implemented!!!");
     }
+
+    // const isPlayer1UnitsFactoryEqualFirstCountry =
+    //   player1UnitsFactory.country === this._firstPlayerCountry;
+    // const isPlayer2UnitsFactoryEqualFirstCountry =
+    //   player2UnitsFactory.country === this._secondPlayerCountry;
+    // try {
+    //   for (let i = 0; i < this._numberOfPexota; i++) {
+    //     if (isPlayer1UnitsFactoryEqualFirstCountry) {
+    //       this.player1Pexotas.push(new player1UnitsFactory.pexota());
+    //     }
+    //     if (isPlayer2UnitsFactoryEqualFirstCountry) {
+    //       this.player2Pexotas.push(new player2UnitsFactory.pexota());
+    //     }
+    //   }
+
+    //   for (let i = 0; i < this._numberOfKavaleria; i++) {
+    //     if (isPlayer1UnitsFactoryEqualFirstCountry) {
+    //       this.player1Kavalerias.push(new player1UnitsFactory.kavaleria());
+    //     }
+    //     if (isPlayer2UnitsFactoryEqualFirstCountry) {
+    //       this.player2Kavalerias.push(new player2UnitsFactory.kavaleria());
+    //     }
+    //   }
+
+    //   for (let i = 0; i < this._numberOfArtileria; i++) {
+    //     if (isPlayer1UnitsFactoryEqualFirstCountry) {
+    //       this.player1Artilerias.push(new player1UnitsFactory.artileria());
+    //     }
+    //     if (isPlayer2UnitsFactoryEqualFirstCountry) {
+    //       this.player2Artilerias.push(new player2UnitsFactory.artileria());
+    //     }
+    //   }
+    // } catch (error) {
+    //   throw new Error("createInitialUnits is not implemented!!!");
+    // }
   }
 
   startGame() {
@@ -132,8 +166,8 @@ class GameEngine {
         `-----------${this._firstPlayerCountry} VS ${this._secondPlayerCountry}----------`
       );
       this.createInitialUnits();
-
       this._validateGame();
+      console.log("GAME FINISHED");
     } catch (error) {
       console.log("GAME FINISHED, because: ", error.message);
     }
@@ -141,5 +175,6 @@ class GameEngine {
 }
 
 const gameEngine = new GameEngine();
+console.log(gameEngine);
 
 export { gameEngine, PexotaBase, KavaleriaBase, ArtileriaBase };
