@@ -11,7 +11,6 @@ class KavaleriaBase extends MilitaryUnit {} //5
 
 class ArtileriaBase extends MilitaryUnit {} // 2
 
-
 // Our abstract factory which should be implemented by all country teams(mandatory)
 // all methods should be implemented.
 class MilitaryUnitsFactory {
@@ -21,35 +20,34 @@ class MilitaryUnitsFactory {
     }
     this.countryName = countryName;
 
-    if (this.constructor.name === 'MilitaryUnitsFactory') {
-      throw new TypeError("You can't create object from abstract MilitaryUnitsFactory");
+    if (this.constructor.name === "MilitaryUnitsFactory") {
+      throw new TypeError(
+        "You can't create object from abstract MilitaryUnitsFactory"
+      );
     }
 
     const proto = Object.getPrototypeOf(this);
     const superProto = MilitaryUnitsFactory.prototype;
     const childMethodNames = Object.getOwnPropertyNames(proto);
 
-    const missingMethodName = Object.getOwnPropertyNames(superProto)
-    .find(name => {
-      return !childMethodNames.includes(name);
-    });
+    const missingMethodName = Object.getOwnPropertyNames(superProto).find(
+      (name) => {
+        return !childMethodNames.includes(name);
+      }
+    );
 
     if (missingMethodName) {
-      throw new TypeError(`Your class ${this.countryName} didn't implement ${missingMethodName} method!!! Please provide`);
+      throw new TypeError(
+        `Your class ${this.countryName} didn't implement ${missingMethodName} method!!! Please provide`
+      );
     }
   }
 
-  createPexota() {
+  createPexota() {}
 
-  }
+  createKavaleria() {}
 
-  createKavaleria() {
-
-  }
-
-  createArtileria() {
-
-  }
+  createArtileria() {}
 }
 class NotFareGameException extends Error {
   constructor() {
@@ -64,8 +62,8 @@ class GameEngine {
     this._numberOfKavaleria = 5;
     this._numberOfArtileria = 2;
 
-    this._registeredCountriesNames = [];
-    this._registeredCountriesUnitsFactory = [];
+    // this._registeredCountriesNames = [];
+    // this._registeredCountriesUnitsFactory = [];
     this._firstPlayerCountry = "";
     this._secondPlayerCountry = "";
 
@@ -80,7 +78,9 @@ class GameEngine {
   }
 
   registerContry(countryUnitsFactory) {
-    throw new Error("Don't use 'registerContry' method, use 'registerMilitraryUnitsFactory'!!!");
+    throw new Error(
+      "Don't use 'registerContry' method, use 'registerMilitraryUnitsFactory'!!!"
+    );
   }
 
   registerMilitraryUnitsFactory(factory) {
@@ -92,7 +92,8 @@ class GameEngine {
   }
 
   getCountries() {
-    return this._registeredCountriesNames;
+    // return this._registeredCountriesNames;
+    return this._militaryUnitsFactories;
   }
 
   setFirstPlayerCountry(countryName) {
@@ -139,19 +140,19 @@ class GameEngine {
 
   createUnits(pexotaArray, kavaleriaArray, artileriaArray, unitsFactory) {
     for (let i = 0; i < this._numberOfPexota; i++) {
-      pexotaArray.push(new unitsFactory.pexota());
+      pexotaArray.push(unitsFactory.createPexota());
     }
     for (let i = 0; i < this._numberOfKavaleria; i++) {
-      kavaleriaArray.push(new unitsFactory.kavaleria());
+      kavaleriaArray.push(unitsFactory.createKavaleria());
     }
     for (let i = 0; i < this._numberOfArtileria; i++) {
-      artileriaArray.push(new unitsFactory.artileria());
+      artileriaArray.push(unitsFactory.createKavaleria());
     }
   }
 
   createInitialUnits() {
-    const player1UnitsFactory = this._registeredCountriesUnitsFactory[0];
-    const player2UnitsFactory = this._registeredCountriesUnitsFactory[1];
+    const player1UnitsFactory = this._militaryUnitsFactories[0];
+    const player2UnitsFactory = this._militaryUnitsFactories[1];
 
     try {
       this.createUnits(
@@ -160,7 +161,6 @@ class GameEngine {
         this.player1Artilerias,
         player1UnitsFactory
       );
-
       this.createUnits(
         this.player2Pexotas,
         this.player2Kavalerias,
@@ -170,41 +170,6 @@ class GameEngine {
     } catch (error) {
       throw new Error("!!!createInitialUnits is not implemented!!!");
     }
-
-    // const isPlayer1UnitsFactoryEqualFirstCountry =
-    //   player1UnitsFactory.country === this._firstPlayerCountry;
-    // const isPlayer2UnitsFactoryEqualFirstCountry =
-    //   player2UnitsFactory.country === this._secondPlayerCountry;
-    // try {
-    //   for (let i = 0; i < this._numberOfPexota; i++) {
-    //     if (isPlayer1UnitsFactoryEqualFirstCountry) {
-    //       this.player1Pexotas.push(new player1UnitsFactory.pexota());
-    //     }
-    //     if (isPlayer2UnitsFactoryEqualFirstCountry) {
-    //       this.player2Pexotas.push(new player2UnitsFactory.pexota());
-    //     }
-    //   }
-
-    //   for (let i = 0; i < this._numberOfKavaleria; i++) {
-    //     if (isPlayer1UnitsFactoryEqualFirstCountry) {
-    //       this.player1Kavalerias.push(new player1UnitsFactory.kavaleria());
-    //     }
-    //     if (isPlayer2UnitsFactoryEqualFirstCountry) {
-    //       this.player2Kavalerias.push(new player2UnitsFactory.kavaleria());
-    //     }
-    //   }
-
-    //   for (let i = 0; i < this._numberOfArtileria; i++) {
-    //     if (isPlayer1UnitsFactoryEqualFirstCountry) {
-    //       this.player1Artilerias.push(new player1UnitsFactory.artileria());
-    //     }
-    //     if (isPlayer2UnitsFactoryEqualFirstCountry) {
-    //       this.player2Artilerias.push(new player2UnitsFactory.artileria());
-    //     }
-    //   }
-    // } catch (error) {
-    //   throw new Error("createInitialUnits is not implemented!!!");
-    // }
   }
 
   startGame() {
@@ -225,4 +190,10 @@ class GameEngine {
 const gameEngine = new GameEngine();
 console.log(gameEngine);
 
-export { gameEngine, PexotaBase, KavaleriaBase, ArtileriaBase, MilitaryUnitsFactory };
+export {
+  gameEngine,
+  PexotaBase,
+  KavaleriaBase,
+  ArtileriaBase,
+  MilitaryUnitsFactory,
+};

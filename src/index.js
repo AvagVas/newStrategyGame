@@ -15,9 +15,8 @@ ReactDOM.render(
 );
 
 let allCountries = gameEngine.getCountries();
-
-let firstPlaySelectedCountry = allCountries[0];
-let secondPlayerSelectedCountry = allCountries[1];
+let firstPlaySelectedCountry = allCountries[0].countryName;
+let secondPlayerSelectedCountry = allCountries[1].countryName;
 
 gameEngine.setFirstPlayerCountry(firstPlaySelectedCountry);
 gameEngine.setSecondPlayerCountry(secondPlayerSelectedCountry);

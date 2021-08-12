@@ -3,7 +3,7 @@ import {
   KavaleriaBase,
   ArtileriaBase,
   gameEngine,
-  MilitaryUnitsFactory
+  MilitaryUnitsFactory,
 } from "./coreTeam/gameEngine";
 
 class FrancePexota extends PexotaBase {}
@@ -12,9 +12,20 @@ class FranceKavaleria extends KavaleriaBase {}
 
 class FranceArtileria extends ArtileriaBase {}
 
-gameEngine.registerContry({
-  country: "France",
-  pexota: FrancePexota,
-  kavaleria: FranceKavaleria,
-  artileria: FranceArtileria
-});
+class FranceTeam extends MilitaryUnitsFactory {
+  createPexota() {
+    return new FrancePexota();
+  }
+
+  createKavaleria() {
+    return new FranceKavaleria();
+  }
+
+  createArtileria() {
+    return new FranceArtileria();
+  }
+}
+
+const franceTeam = new FranceTeam("France");
+
+gameEngine.registerMilitraryUnitsFactory(franceTeam);
